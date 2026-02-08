@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 public class PrintedBook extends Book {
 
     private Integer pages;
-    private String coverType; // HARD / SOFT
+    private String coverType; 
 
     public Integer getPages() { return pages; }
     public void setPages(Integer pages) { this.pages = pages; }
