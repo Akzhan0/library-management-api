@@ -20,12 +20,11 @@ public class BookBuilder {
         return new BookBuilder(new PrintedBook());
     }
 
-    // fluent common
     public BookBuilder title(String title) { book.setTitle(title); return this; }
     public BookBuilder author(String author) { book.setAuthor(author); return this; }
     public BookBuilder isbn(String isbn) { book.setIsbn(isbn); return this; }
 
-    // optional EBook fields
+
     public BookBuilder downloadUrl(String url) {
         if (book instanceof EBook e) e.setDownloadUrl(url);
         return this;
@@ -36,7 +35,6 @@ public class BookBuilder {
         return this;
     }
 
-    // optional PrintedBook fields
     public BookBuilder pages(Integer pages) {
         if (book instanceof PrintedBook p) p.setPages(pages);
         return this;
