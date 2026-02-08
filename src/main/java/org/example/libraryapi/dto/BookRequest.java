@@ -29,13 +29,13 @@ public class BookRequest {
     public String getIsbn() { return isbn; }
     public void setIsbn(String isbn) { this.isbn = isbn; }
 
-    private String type; // EBOOK или PRINTED
+    private String type; 
 
-    // optional fields for EBook
+
     private String downloadUrl;
     private Double fileSizeMb;
 
-    // optional fields for PrintedBook
+ 
     private Integer pages;
     private String coverType;
 
