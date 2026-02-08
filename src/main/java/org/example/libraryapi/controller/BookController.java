@@ -1,13 +1,17 @@
 package org.example.libraryapi.controller;
 
-import org.example.libraryapi.model.Book;
+import jakarta.validation.Valid;
+import org.example.libraryapi.dto.BookRequest;
+import org.example.libraryapi.dto.BookResponse;
 import org.example.libraryapi.service.BookService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books/")
+@RequestMapping("/api/books")
 public class BookController {
 
     private final BookService service;
@@ -16,33 +20,31 @@ public class BookController {
         this.service = service;
     }
 
-    // CREATE
     @PostMapping
-    public Book create(@RequestBody Book book) {
-        return service.create(book);
+    public ResponseEntity<BookResponse> create(@Valid @RequestBody BookRequest request) {
+        BookResponse created = service.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // READ ALL
     @GetMapping
-    public List<Book> getAll() {
+    public List<BookResponse> getAll() {
         return service.getAll();
     }
 
-    // READ BY ID
     @GetMapping("/{id}")
-    public Book getById(@PathVariable Long id) {
+    public BookResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
-    public Book update(@PathVariable Long id, @RequestBody Book book) {
-        return service.update(id, book);
+    public BookResponse update(@PathVariable Long id, @Valid @RequestBody BookRequest request) {
+        return service.update(id, request);
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
