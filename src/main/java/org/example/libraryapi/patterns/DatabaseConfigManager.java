@@ -13,7 +13,6 @@ public final class DatabaseConfigManager {
         return INSTANCE;
     }
 
-    // Инициализируем один раз
     public void init(String url, String username) {
         if (this.url == null && this.username == null) {
             this.url = url;
