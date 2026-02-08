@@ -29,7 +29,6 @@ public final class BookFactory {
             default -> throw new IllegalArgumentException("Unknown book type: " + req.getType());
         }
 
-        // common fields
         book.setTitle(req.getTitle());
         book.setAuthor(req.getAuthor());
         book.setIsbn(req.getIsbn());
