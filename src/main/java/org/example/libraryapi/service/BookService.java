@@ -6,7 +6,7 @@ import org.example.libraryapi.exception.NotFoundException;
 import org.example.libraryapi.model.Book;
 import org.example.libraryapi.repository.BookRepository;
 import org.example.libraryapi.patterns.BookBuilder;
-import org.example.libraryapi.patterns.BookFactory;   // ✅ Factory используется
+import org.example.libraryapi.patterns.BookFactory;  
 import org.example.libraryapi.utils.BookMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,6 @@ public class    BookService {
         this.repo = repo;
     }
 
-    // ===================== CREATE (BUILDER PATTERN) =====================
     public BookResponse create(BookRequest req) {
         Book book;
 
@@ -34,7 +33,7 @@ public class    BookService {
                     .fileSizeMb(req.getFileSizeMb())
                     .build();
         } else {
-            // PRINTED BOOK по умолчанию
+ 
             book = BookBuilder.printed()
                     .title(req.getTitle())
                     .author(req.getAuthor())
@@ -48,7 +47,6 @@ public class    BookService {
         return BookMapper.toResponse(saved);
     }
 
-    // ===================== READ ALL =====================
     public List<BookResponse> getAll() {
         return repo.findAll()
                 .stream()
@@ -56,20 +54,16 @@ public class    BookService {
                 .toList();
     }
 
-    // ===================== READ BY ID =====================
     public BookResponse getById(Long id) {
         Book b = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book not found with id: " + id));
         return BookMapper.toResponse(b);
     }
 
-    // ===================== UPDATE (FACTORY PATTERN) =====================
     public BookResponse update(Long id, BookRequest req) {
         Book existing = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book not found with id: " + id));
 
-        // ✅ Factory создаёт нужный подкласс Book (EBook/PrintedBook)
-        // и мы переносим id, чтобы обновление стало update, а не insert
         Book updated = BookFactory.create(req);
         setId(updated, existing.getId());
 
@@ -77,15 +71,12 @@ public class    BookService {
         return BookMapper.toResponse(saved);
     }
 
-    // ===================== DELETE =====================
     public void delete(Long id) {
         Book b = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Book not found with id: " + id));
         repo.delete(b);
     }
 
-    // Вспомогательный метод: установить id через reflection (потому что id private)
-    // Это нужно, чтобы update работал корректно.
     private void setId(Book book, Long id) {
         try {
             var field = Book.class.getDeclaredField("id");
